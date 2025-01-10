@@ -2,47 +2,63 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
 
-class User extends Authenticatable
+class User extends Model
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory;
+
+    // Allow mass assignment for specific attributes
+    protected $guarded = [];
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
+     * Define the relationship with the Zone model.
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    public function zone(): BelongsTo
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->belongsTo(Zone::class, 'zone');
     }
+
+    /**
+     * The "booted" method of the model.
+     * Automatically hash password and generate user_id.
+     */
+    protected static function booted()
+    {
+        static::creating(function ($user) {
+            // Hash the password if it's not already hashed
+            if (isset($user->password)) {
+                $user->password = bcrypt($user->password);
+            }
+
+            // Generate a unique 8-digit random number for user_id
+            if (empty($user->user_id)) {
+                $user->user_id = self::generateUniqueUserId();
+            }
+        });
+
+        static::updating(function ($user) {
+            // Hash the password if it is updated and not already hashed
+            if (isset($user->password) && !password_get_info($user->password)['algo']) {
+                $user->password = bcrypt($user->password);
+            }
+        });
+    }
+
+    /**
+     * Generate a unique 8-digit random user ID.
+     */
+    private static function generateUniqueUserId(): string
+{
+    do {
+        // Generate an 8-character alphanumeric string
+        $userId = substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'), 0, 8);
+    } while (self::where('user_id', $userId)->exists());
+
+    return $userId;
+}
+
 }
