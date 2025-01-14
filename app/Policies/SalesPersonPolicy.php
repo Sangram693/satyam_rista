@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
+use App\Models\SalesPerson;
 use App\Models\User;
-use App\Models\user;
 use Illuminate\Auth\Access\Response;
 
-class UserPolicy
+class SalesPersonPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,7 +19,7 @@ class UserPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, user $model): bool
+    public function view(User $user, SalesPerson $salesPerson): bool
     {
         return false;
     }
@@ -35,7 +35,7 @@ class UserPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, user $model): bool
+    public function update(User $user, SalesPerson $salesPerson): bool
     {
         return false;
     }
@@ -43,7 +43,7 @@ class UserPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, user $model): bool
+    public function delete(User $user, SalesPerson $salesPerson): bool
     {
         return false;
     }
@@ -51,7 +51,7 @@ class UserPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, user $model): bool
+    public function restore(User $user, SalesPerson $salesPerson): bool
     {
         return false;
     }
@@ -59,7 +59,7 @@ class UserPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, user $model): bool
+    public function forceDelete(User $user, SalesPerson $salesPerson): bool
     {
         return false;
     }

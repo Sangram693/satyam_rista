@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Zone;
 use App\Http\Requests\StoreZoneRequest;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateZoneRequest;
 
 class ZoneController extends Controller

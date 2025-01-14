@@ -22,7 +22,8 @@ class StoreZoneRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name'=>'required|string|max:50',
+            'code'=>'nullable|string|max:50'
         ];
     }
 }

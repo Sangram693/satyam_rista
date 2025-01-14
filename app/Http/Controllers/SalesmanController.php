@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Dealer;
-use App\Http\Requests\StoreDealerRequest;
-use App\Http\Requests\UpdateDealerRequest;
+use App\Models\Salesman;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreSalesmanRequest;
+use App\Http\Requests\UpdateSalesmanRequest;
 
-class DealerController extends Controller
+class SalesmanController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +28,7 @@ class DealerController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreDealerRequest $request)
+    public function store(StoreSalesmanRequest $request)
     {
         //
     }
@@ -35,7 +36,7 @@ class DealerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Dealer $dealer)
+    public function show(Salesman $salesman)
     {
         //
     }
@@ -43,7 +44,7 @@ class DealerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Dealer $dealer)
+    public function edit(Salesman $salesman)
     {
         //
     }
@@ -51,7 +52,7 @@ class DealerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateDealerRequest $request, Dealer $dealer)
+    public function update(UpdateSalesmanRequest $request, Salesman $salesman)
     {
         //
     }
@@ -59,7 +60,7 @@ class DealerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Dealer $dealer)
+    public function destroy(Salesman $salesman)
     {
         //
     }
