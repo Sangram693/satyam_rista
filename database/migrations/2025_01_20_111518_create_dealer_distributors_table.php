@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('username', 100)->unique();
             $table->string('password'); 
             $table->text('address')->nullable();
-            $table->string('zone', 100)->nullable();
+            $table->unsignedBigInteger('zone')->nullable();
             $table->string('pan_card', 50)->unique();
             $table->boolean('is_verified')->default(false);
             $table->enum('type', ['dealer', 'distributor']);
@@ -32,6 +32,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('salesman_id')->references('id')->on('salesmen')->onDelete('set null');
+            $table->foreign('zone')->references('id')->on('zones')->onUpdate('cascade')->onDelete('set null');
         });
     }
 

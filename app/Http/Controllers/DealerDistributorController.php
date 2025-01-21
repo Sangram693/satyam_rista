@@ -168,9 +168,52 @@ public function store(StoreDealerDistributorRequest $request)
      * Update the specified resource in storage.
      */
     public function update(UpdateDealerDistributorRequest $request, int $id)
-    {
-        //
+{
+
+    $user = Auth::user();
+        
+        if ($user->role !== 'admin') {
+            return response()->json(['message' => 'Only admin can update'], 401);
+        }
+
+    $dealerDistributor = DealerDistributor::find($id);
+
+    // Check if dealer distributor exists
+    if (!$dealerDistributor) {
+        return response()->json(['message' => 'Dealer or Distributor not found.'], 404);
     }
+
+    // Handle File Uploads
+    if ($request->hasFile('bank_statement')) {
+        $bankStatementPath = $request->file('bank_statement')->store('uploads/bank_statements', 'public');
+        $dealerDistributor->bank_statement = $bankStatementPath;
+    }
+
+    if ($request->hasFile('gst_certificate')) {
+        $gstCertificatePath = $request->file('gst_certificate')->store('uploads/gst_certificates', 'public');
+        $dealerDistributor->gst_certificate = $gstCertificatePath;
+    }
+
+    // Update fields
+    $dealerDistributor->update([
+        'gstin' => $request->gstin ?? $dealerDistributor->gstin,
+        'did' => $request->did ?? $dealerDistributor->did,
+        'name' => $request->name ?? $dealerDistributor->name,
+        'phone_number' => $request->phone_number ?? $dealerDistributor->phone_number,
+        'email' => $request->email ?? $dealerDistributor->email,
+        'address' => $request->address ?? $dealerDistributor->address,
+        'zone' => $request->zone ?? $dealerDistributor->zone,
+        'pan_card' => $request->pan_card ?? $dealerDistributor->pan_card,
+        'type' => $request->type ?? $dealerDistributor->type,
+        'salesman_id' => $request->salesman_id ?? $dealerDistributor->salesman_id,
+    ]);
+
+    return response()->json([
+        'message' => 'Dealer Distributor updated successfully.',
+        'data' => $dealerDistributor
+    ]);
+}
+
 
     /**
      * Remove the specified resource from storage.

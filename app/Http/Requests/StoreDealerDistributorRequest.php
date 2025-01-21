@@ -38,7 +38,7 @@ class StoreDealerDistributorRequest extends FormRequest
             'password' => 'required|string|min:6|confirmed',
             'password_confirmation' => 'required|string',
             'address' => 'nullable|string',
-            'zone' => 'nullable|string|max:100',
+            'zone' => 'nullable|integer|exists:zones,id',
             'pan_card' => 'required|string|max:50|unique:dealer_distributors,pan_card',
             'type' => 'required|in:dealer,distributor',
             'salesman_id' => ($user->role === 'salesman') ? 'nullable' : 'required|exists:salesmen,id',

@@ -32,7 +32,15 @@ class ZoneController extends Controller
      */
     public function store(StoreZoneRequest $request)
     {
-        //
+        $user = Auth::user();
+
+        if ($user->role !== 'admin') {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        $zone = Zone::create($request->validated());
+
+        return response()->json(['message' => 'Zone created successfully', 'zone' => $zone]);
     }
 
     /**
