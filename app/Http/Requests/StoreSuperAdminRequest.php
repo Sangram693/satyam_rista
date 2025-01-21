@@ -28,7 +28,7 @@ class StoreSuperAdminRequest extends FormRequest
             'address' => 'nullable|string',
             'employee_code' => 'required|string|max:200|unique:super_admins,employee_code',
             'hire_date' => 'required|date',
-            'status' => 'nullable|in:active,inactive,terminated',
+            'status' => 'nullable|in:active,inactive,terminated|default:active',
             'sales_target' => 'nullable|numeric',
             'achieved_sales' => 'nullable|numeric',
             'user_name' => 'required|string|max:200|unique:sales_people,user_name',

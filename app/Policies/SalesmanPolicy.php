@@ -29,7 +29,7 @@ class SalesmanPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return Auth::user()->role === 'super_admin' || Auth::user()->role === 'admin';
     }
 
     /**
@@ -37,7 +37,7 @@ class SalesmanPolicy
      */
     public function update(User $user, Salesman $salesman): bool
     {
-        return false;
+        return Auth::user()->role === 'super_admin' || Auth::user()->role === 'admin';
     }
 
     /**
@@ -45,7 +45,7 @@ class SalesmanPolicy
      */
     public function delete(User $user, Salesman $salesman): bool
     {
-        return false;
+        return Auth::user()->role === 'super_admin' || Auth::user()->role === 'admin';
     }
 
     /**

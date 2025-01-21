@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\DealerDistributor;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Zone extends Model
 {
@@ -15,5 +16,10 @@ class Zone extends Model
     public function salesmen()
     {
         return $this->hasMany(Salesman::class, 'zone');
+    }
+
+    public function dealerDistributors()
+    {
+        return $this->hasMany(DealerDistributor::class, 'zone');
     }
 }

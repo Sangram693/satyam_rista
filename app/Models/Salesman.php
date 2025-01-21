@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Salesman extends Model
 {
     /** @use HasFactory<\Database\Factories\SalesmanFactory> */
-    use HasFactory;
+    use HasApiTokens, HasFactory;
+
+    protected $table = 'salesmen';
 
     protected $guarded = [];
 
@@ -30,5 +33,10 @@ class Salesman extends Model
     public function updater()
     {
         return $this->belongsTo(SalesPerson::class, 'updated_by');
+    }
+
+    public function dealerDistributors()
+    {
+        return $this->hasMany(DealerDistributor::class);
     }
 }

@@ -2,15 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Admin extends Model
 {
     /** @use HasFactory<\Database\Factories\AdminFactory> */
-    use HasFactory;
+    use HasApiTokens, HasFactory;
 
     protected $guarded = [];
+
+    protected $table = 'admins';
 
     public function superAdmin()
     {

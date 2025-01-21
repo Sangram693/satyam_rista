@@ -32,14 +32,6 @@ class SuperAdminController extends Controller
     public function store(StoreSuperAdminRequest $request)
     {
 
-    //     $validator = Validator::make($request->all(), $request->rules());
-
-    // if ($validator->fails()) {
-    //     return response()->json([
-    //         'message' => 'Validation failed.',
-    //         'errors' => $validator->errors(),
-    //     ], 422);
-    // }
         $superAdmin = SuperAdmin::create([
             'name' => $request->name,
             'email' => $request->email,

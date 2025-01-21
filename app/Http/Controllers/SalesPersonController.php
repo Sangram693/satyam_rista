@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
+use App\Models\Salesman;
+use App\Models\SuperAdmin;
 use App\Models\SalesPerson;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -15,7 +18,7 @@ class SalesPersonController extends Controller
      */
     public function login(Request $request)
     {
-        // Validate input
+        
         $credentials = $request->validate([
             'user_name' => 'required',
             'password' => 'required',
@@ -24,24 +27,55 @@ class SalesPersonController extends Controller
             'password.required'=>'Password is required'
         ]);
 
-        // Attempt to log in with user_name and password
+        
         $salesPerson = SalesPerson::where('user_name', $credentials['user_name'])->first();
-        // return response()->json([
-        //     'message' => 'Login successful',
-        //     'user' => $salesPerson,
-        // ]);
+        
+        
+        
+        
 
         if ($salesPerson && Hash::check($credentials['password'], $salesPerson->password)) {
-            // Generate a token for the authenticated user
+            
             $token = $salesPerson->createToken('auth_token')->plainTextToken;
+
+            // return $salesPerson->role;
+
+            switch ($salesPerson->role) {
+                case 'super_admin':
+                    $user = SuperAdmin::where('email', $salesPerson->email)->first();
+                    break;
+                    
+                    case 'admin':
+                        $user = Admin::where('email', $salesPerson->email)->first();
+                        break;
+
+                        case 'salesman':
+                            $user = Salesman::where('email', $salesPerson->email)->first()
+                            ->makeHidden(['admin_id', 'created_by', 'updated_by'])->load('admin', 'dealerDistributors', 'zone', 'creator', 'updater');
+                            break;
+                
+                default:
+                    $user = null;
+                    break;
+            }
 
             return response()->json([
                 'message' => 'Login successful',
                 'token' => $token,
-                'user' => $salesPerson,
+                'role' => $salesPerson->role,
+                'user' => $user,
             ]);
         }
 
         return response()->json(['message' => 'Invalid credentials'], 401);
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        // return response()->json($request->user());
+
+        return response()->json(['message' => 'Logout successful']);
     }
 }

@@ -14,7 +14,9 @@ class ZoneController extends Controller
      */
     public function index()
     {
-        //
+        $zones = Zone::all()->load('dealerDistributors', 'salesmen');
+
+        return response()->json($zones);
     }
 
     /**
