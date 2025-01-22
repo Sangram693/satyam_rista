@@ -26,5 +26,10 @@ class DealerDistributor extends Model
         return $this->belongsTo(Zone::class, 'zone');
     }
 
+    public function bills()
+    {
+        return $this->hasMany(Bill::class);
+    }
+
     protected $table = 'dealer_distributors';
 }

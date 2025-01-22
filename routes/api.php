@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BillController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\ZoneController;
 use App\Http\Controllers\AdminController;
@@ -25,7 +26,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('dealerdistributor/verify/{id}', [DealerDistributorController::class, 'verify'])
     ->name('dealerdistributor.verify');
     Route::apiResource('dealerdistributor', DealerDistributorController::class);
-    
+    Route::get('bill/verify/{id}', [BillController::class, 'verify'])
+    ->name('bill.verify');
+    Route::apiResource('bill', BillController::class);
 
 });
 

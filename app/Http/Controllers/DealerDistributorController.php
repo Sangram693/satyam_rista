@@ -21,7 +21,7 @@ class DealerDistributorController extends Controller
      */
     public function index()
     {
-        $dealerDistributors = DealerDistributor::all()->load('salesman', 'zone');
+        $dealerDistributors = DealerDistributor::all()->makeHidden('salesman_id')->load('salesman', 'zone', 'bills');
 
         return response()->json($dealerDistributors);
     }
@@ -78,7 +78,7 @@ class DealerDistributorController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->role !== 'admin') {
+        if ($user->role !== 'super_admin' && $user->role !== 'admin') {
             return response()->json(['message' => 'Unauthorized: No authenticated user found'], 401);
         }
 
@@ -158,7 +158,7 @@ public function store(StoreDealerDistributorRequest $request)
             return response()->json(['message' => 'Dealer or Distributor not found.'], 404);
         }
 
-        $dealerDistributor->load('salesman', 'zone');
+        $dealerDistributor->makeHidden('salesman_id')->load('salesman', 'zone', 'bills');
 
         return response()->json($dealerDistributor);
     }
